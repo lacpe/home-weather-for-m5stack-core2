@@ -1,0 +1,10 @@
+google-cloud-bigquery
+db-dtypes
+Flask
+requests
+google-cloud-secret-manager
+google-cloud-storage
+google-cloud-speech
+google-genai
+google-cloud-texttospeech
+pandas

@@ -14,5 +14,5 @@ Meteoswiss: [STAC API GUIDE](https://www.geo.admin.ch/en/rest-interface-stac-api
 - Voice-interaction using Gemini, Google Speech-to-Text, and Google TTS.
 
 # Deploying
-You will need a Google Cloud account to proceed. Both the `backend` and `dashboard_fronted` need to be deployed on Google Cloud Run.
+You will need a Google Cloud account to proceed. Both the `backend` and `dashboard_frontend` need to be deployed on Google Cloud Run.
 Endpoints, API keys, and passwords have been abstracted for your convenience.
