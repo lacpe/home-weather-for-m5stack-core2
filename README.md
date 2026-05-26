@@ -7,6 +7,7 @@ This is the final repo for my Cloud and Advanced Analytics 2026 class project. T
 
 # Links and source
 Icons used: [MakinThings/Weather-Icons](https://github.com/Makin-Things/weather-icons)
+
 Meteoswiss: [STAC API GUIDE](https://www.geo.admin.ch/en/rest-interface-stac-api) and [OGD](https://www.meteoswiss.admin.ch/services-and-publications/service/open-data.html)
 
 # Features
