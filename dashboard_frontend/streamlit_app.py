@@ -116,7 +116,7 @@ def reload_time_span():
     time_span_days = {'1 week': 7, '2 weeks': 14, '1 month': 30, '1 year': 365}
     past_data = pd.DataFrame(get_bigquery_info(time_span_days[st.session_state['time_span']], datetime.datetime.today()
                                                .strftime('%Y-%m-%d %H')))
-    past_data['date'] = past_data['date'].apply(lambda x: datetime.datetime.strptime(x, '%a, %d %B %Y %H:%M:%S %Z')
+    past_data['date'] = past_data['date'].apply(lambda x: datetime.datetime.strptime(x, '%a, %d %b %Y %H:%M:%S %Z')
                                                 .strftime('%Y-%m-%d'))
     past_data = past_data.groupby('date')[['indoor_temp', 'indoor_humidity', 'outdoor_temp', 'outdoor_humidity',
                                            'indoor_co2', 'indoor_pressure']].mean()
@@ -125,7 +125,7 @@ def reload_time_span():
 
 
 def initialize_keys():
-    if 'historical_time_span' not in st.session_state.keys():
+    if 'time_span' not in st.session_state.keys():
         st.session_state['time_span'] = "1 week"
         reload_time_span()
     if 'historical_data' not in st.session_state.keys():
