@@ -152,6 +152,8 @@ page_2_widgets = []
 # Switches and buttons
 blink_switch = M5Switch(x=10, y=30, w=50, h=25, bg_c=0x111111, color=0x2233ff, parent=None)
 page_2_widgets.append(blink_switch)
+tips_switch = M5Switch(x=200, y=30, w=50, h=25, bg_c=0x111111, color=0x2233ff, parent=None)
+page_2_widgets.append(tips_switch)
 send_data_switch = M5Switch(x=10, y=70, w=50, h=25, bg_c=0x111111, color=0x2233ff, parent=None)
 page_2_widgets.append(send_data_switch)
 send_button = M5Btn(text='Send data now', x=150, y=110, w=150, h=30, bg_c=0x111111, text_c=0xffffff, font=FONT_MONT_14, parent=None)
@@ -163,6 +165,8 @@ page_2_widgets.append(wifi_button)
 # Legends
 blink_label = M5Label('LED blink', x=70, y=32, color=0xffffff, font=FONT_MONT_22, parent=None)
 page_2_widgets.append(blink_label)
+tips_label = M5Label('TIPS', x=260, y=32, color=0xffffff, font=FONT_MONT_22, parent=None)
+page_2_widgets.append(tips_label)
 send_data_label = M5Label('Activate data sending', x=70, y=72, color=0xffffff, font=FONT_MONT_22, parent=None)
 page_2_widgets.append(send_data_label)
 test_label = M5Label('For testing:', x=10, y=110, color=0xffffff, font=FONT_MONT_22, parent=None)
@@ -265,7 +269,7 @@ def update_forecast():
 def get_pollen():
   global pollen_data
   try:
-    req = urequests.request(method='GET', url=BACKEND_LINK+'//pollen?backend_pw='+BACKEND_PW,
+    req = urequests.request(method='GET', url=BACKEND_LINK+'/pollen?backend_pw='+BACKEND_PW,
                             headers={'content-type': 'application/json'})
     if (req.status_code) == 200:
       pollen_data = json.loads(req.text)
@@ -297,7 +301,7 @@ def blink():
 # Uploads data to Google BigQuery
 def send_data():
   try:
-    req = urequests.request(method='POST', url=BACKEND_LINK,
+    req = urequests.request(method='POST', url=BACKEND_LINK+'/bigquery',
                             json={'backend_pw': BACKEND_PW,
                                   'values': ({'date': ntp.formatDate('-'),
                                               'time': ntp.formatTime(':'),
@@ -370,6 +374,8 @@ def ttimer1():
 def get_quick_tip():
   global is_recording, speaker_volume
   if is_recording:
+    return
+  if not tips_switch.get_state():
     return
   genai_text = genai_answer("Any quick tips regarding the weather right now?")
   text_to_speech(genai_text)
@@ -556,21 +562,24 @@ def connect_wifi():
     wait(5)
     if wlan.status() == 1010:
       wifi_status_image.set_img_src("res/wifi_on.png")
+      ssid_display.set_text('SSID 1')
       break
     blink()
     wlan.connect('SSID 2', 'PW 2')
     wait(5)
     if wlan.status() == 1010:
       wifi_status_image.set_img_src("res/wifi_on.png")
+      ssid_display.set_text('SSID 2')
       break
     blink()
     wlan.connect('SSID 3', 'PW 3')
     wait(5)
-    if wlan.status == 1010:
+    if wlan.status() == 1010:
       wifi_status_image.set_img_src("res/wifi_on.png")
+      ssid_display.set_text('SSID 3')
       break
     connection_attempts = connection_attempts - 1
-  if wlan.status == 1010:
+  if wlan.status() == 1010:
     wifi_status_image.set_img_src("res/wifi_on.png")
   else:
     wifi_status_image.set_img_src("res/wifi_off.png")
@@ -585,6 +594,7 @@ now.
 load_active_page()
 send_data_switch.set_on()
 blink_switch.set_on()
+tips_switch.set_off()
 connect_wifi()
 if wlan.status == 1010:
   wifi_status_image.set_img_src("res/wifi_on.png")
@@ -602,7 +612,7 @@ show_pollen()
 rgb.setColorAll(0x33ff33)
 blink()
 while True:
-  if pir_1.state == 1:
+  if pir_1.state == 1 and tips_switch.get_state():
     if ntp.hour != last_time_shown:
       rgb.setColorAll(0x000000)
       blink()
