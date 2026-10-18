@@ -3,7 +3,7 @@ This is the final repo for my Cloud and Advanced Analytics 2026 class project. T
 
 # Interacting
 - See my [YouTube video](https://youtu.be/t2wQu9lDJLw)
-- See the [fronted](https://caa26-project-frontend-211229885401.europe-west1.run.app)
+- See the [frontend](https://caa26-project-frontend-211229885401.europe-west1.run.app)
 
 # Links and source
 Icons used: [MakinThings/Weather-Icons](https://github.com/Makin-Things/weather-icons)
